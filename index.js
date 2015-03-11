@@ -22,6 +22,7 @@ parser.createWebServer()
 
 function parseOnce(it){
     var link = it.next();
+    var all = [];
     if(link !== undefined){
         var l = new Link({url:link});
         l.save();
@@ -29,10 +30,11 @@ function parseOnce(it){
         prsr.createWebServer()
         .on('crawled',function(r){
             console.log(r.items);
+            all = all.concat(r.items).concat(r.links);
             parseOnce(it);
         });
     }else{
-        //var rit = new Iterator(links);
-        //parseOnce(rit);
+        var rit = new Iterator(all);
+        parseOnce(rit);
     }
 };

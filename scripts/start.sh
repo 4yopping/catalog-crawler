@@ -1,2 +1,2 @@
 echo "Nothing to do here"
-npm start
+node index.js

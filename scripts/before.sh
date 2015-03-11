@@ -1,2 +1,1 @@
-echo "Nothing to do here"
-npm install
+echo 'nothing to do here'

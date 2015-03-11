@@ -6,7 +6,7 @@
     "repository" :
     { "type" : "git", 
         "url" : "git@github.com:4yopping/crawler.git"
-    }
+    },
     "scripts": {
         "test": "echo success"
     },

@@ -14,7 +14,9 @@
   "author": "@Quantium",
   "license": "ISC",
   "dependencies": {
+    "joi": "^6.0.4",
     "min-iterator": "^1.0.0",
+    "mongoose": "^3.8.24",
     "node-phantom": "^0.2.5",
     "phantom": "^0.7.2"
   }

@@ -1,36 +1,38 @@
 var Iterator = require('./lib/Iterator'),
     Parser = require('./lib/Parser'),
-    parser = new Parser('http://usados.autoplaza.com.mx/'),
-    autos = [],
-    links = [];
-
+    connection = require('./connection'),
+    Link = require('./model/Link'),
+    parser = new Parser('http://usados.autoplaza.com.mx/');
 
 parser.createWebServer()
 .on('crawled',function(res){
     var all = res.links.concat(res.items);
-    links = links.concat(all);
-    autos = autos.concat(res.items);
     var it = new Iterator(all);
     parseOnce(it);
 })
 .on('end',function(p){
-    console.log(autos);
-    console.log(autos.length);
+    Link.find({}, function(err, users) {
+        var userMap = {};
+        users.forEach(function(user) {
+            console.log('Feteched from remote host:');
+            console.info(user);
+        });
+    });
 });
 
 function parseOnce(it){
     var link = it.next();
     if(link !== undefined){
+        var l = new Link({url:link});
+        l.save();
         var prsr = new Parser(link);
         prsr.createWebServer()
         .on('crawled',function(r){
             console.log(r.items);
-            links = links.concat(r.links).concat(r.items);
-            autos = autos.concat(r.items);
             parseOnce(it);
         });
     }else{
-        var rit = new Iterator(links);
-        parseOnce(rit);
+        //var rit = new Iterator(links);
+        //parseOnce(rit);
     }
 };

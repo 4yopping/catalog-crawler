@@ -1,6 +1,6 @@
 {
   "name": "autoplaza-spider",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A secret spider for autoplaza site",
   "main": "index.js",
   "scripts": {

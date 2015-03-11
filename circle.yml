@@ -1,0 +1,18 @@
+machine:
+    node:
+        version: 0.10.36
+
+deployment:
+    staging:
+        branch: master
+        codedeploy:
+            Analyzer:
+                application_root: /
+                revision_location:
+                    revision_type: S3
+                    s3_location:
+                        bucket: 4yp
+                        key_pattern: om/Analyzer-{SHORT_COMMIT}-{BUILD_NUM}.zip
+                region: us-east-1
+                deployment_group: AutoplazaAnalyzer
+                deployment_config: CodeDeployDefault.AllAtOnce

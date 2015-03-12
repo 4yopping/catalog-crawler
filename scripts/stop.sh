@@ -1,2 +1,3 @@
 echo "Nothing to do here"
-forever stopall
+whoami >> /home/ec2-user/deploy.info
+pwd >> /home/ec2-user/deploy.info

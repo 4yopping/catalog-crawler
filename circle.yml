@@ -14,5 +14,5 @@ deployment:
                         bucket: 4yp
                         key_pattern: om/Analyzer-{SHORT_COMMIT}-{BUILD_NUM}.zip
                 region: us-east-1
-                deployment_group: AutoplazaAnalyzer
+                deployment_group: deploy
                 deployment_config: CodeDeployDefault.AllAtOnce

@@ -8,7 +8,8 @@
         "url" : "git@github.com:4yopping/crawler.git"
     },
     "scripts": {
-        "test": "echo success"
+        "test": "echo success",
+        "start": "node index.js"
     },
     "keywords": [
         "spider",

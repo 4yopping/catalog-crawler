@@ -1,40 +1,25 @@
-var Iterator = require('./lib/Iterator'),
-    Parser = require('./lib/Parser'),
-    connection = require('./connection'),
-    Link = require('./model/Link'),
-    parser = new Parser('http://usados.autoplaza.com.mx/');
+var cluster = require('cluster'),
+    app = require('./worker');
 
-parser.createWebServer()
-.on('crawled',function(res){
-    var all = res.links.concat(res.items);
-    var it = new Iterator(all);
-    parseOnce(it);
-})
-.on('end',function(p){
-    Link.find({}, function(err, users) {
-        var userMap = {};
-        users.forEach(function(user) {
-            console.log('Feteched from remote host:');
-            console.info(user);
-        });
-    });
-});
+var workers = {},
+    count = require('os').cpus().length;
 
-function parseOnce(it){
-    var link = it.next();
-    var all = [];
-    if(link !== undefined){
-        var l = new Link({url:link});
-        l.save();
-        var prsr = new Parser(link);
-        prsr.createWebServer()
-        .on('crawled',function(r){
-            console.log(r.items);
-            all = all.concat(r.items).concat(r.links);
-            parseOnce(it);
-        });
-    }else{
-        var rit = new Iterator(all);
-        parseOnce(rit);
-    }
-};
+function spawn(){
+  var worker = cluster.fork();
+  workers[worker.pid] = worker;
+  return worker;
+}
+
+if (cluster.isMaster) {
+  for (var i = 0; i < count; i++) {
+    spawn();
+  }
+  cluster.on('death', function(worker) {
+    console.log('worker ' + worker.pid + ' died. spawning a new process...');
+    delete workers[worker.pid];
+    spawn();
+  });
+} else {
+    app.createWebServer();
+}
+

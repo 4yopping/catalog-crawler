@@ -2,23 +2,22 @@ var mongoose = require('mongoose'),
     Joi = require('joi')
 
 var LinkSchema = mongoose.Schema({
-    //{url:'http://usados.autoplaza.com.mx/',type:'link',lastStatus:200,crawled:false,dynamic:true}
     url         : String,
-    type        : String,
-    lastStatus  : Number,
-    crawled     : Boolean,
-    dynamic     : Boolean,
-    created     : { type: String, default: Date.now }
+    type        : {type: String , default: 'link'   }, 
+    lastStatus  : {type: Number , default: 200      },
+    crawled     : {type: Boolean, default: false    },
+    dynamic     : {type: Boolean, default: false    },
+    created     : {type: String , default: Date.now }
 });
 
 LinkSchema.methods.joiValidate = function(next) {
     var schema = {
         url: Joi.string().uri().required(),
-        type: Joi.string().valid('link','item','index','doc','other').default('link'),
-        lastStatus: Joi.number().min(100).max(700).default(200),
-        crawled: Joi.boolean().default(false),
-        dynamic: Joi.boolean().default(false),
-        created: Joi.date().default(Date.now, 'time of creation')
+        type: Joi.string().valid('link','item','index','doc','other').required().default('link'),
+        lastStatus: Joi.number().min(100).max(700).required().default(200),
+        crawled: Joi.boolean().required().default(false),
+        dynamic: Joi.boolean().required().default(false),
+        created: Joi.date().required().default(Date.now, 'time of creation')
     }
     var v = Joi.validate(this, schema);
     if(v == null){
